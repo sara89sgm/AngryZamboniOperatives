@@ -97,7 +97,7 @@
 
             // show an explosion!
             Crafty.e("Explosion").attr({x:this.x, y:this.y});
-
+            Crafty.audio.play("cracksound");
             // hide this offscreen
             this.x = -2000;
 
@@ -259,7 +259,7 @@
         var p2 = Crafty.e('Player').multiway(5, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}) .attr({x: 715, y: 300})
                         .spriteName('player2').collision();
        // p2.scoreboard = scoreboard2;
-        
+       Crafty.audio.add("cracksound", "sfx/ice_crack_1.mp3");
         // create some junk to avoid
         for (i = 0; i < 5; i++) {
             Crafty.e('Ice').collision();
