@@ -86,8 +86,8 @@
         // randomly position 
         _randomlyPosition: function() {
             this.attr({
-                x: Crafty.math.randomNumber(0, 800), 
-                y: Crafty.math.randomNumber(0,600-this.h)});
+                x: Crafty.math.randomNumber(0, 700), 
+                y: Crafty.math.randomNumber(0,500-this.h)});
         },
         // we got hit!
         _hitByPlayer: function(object) {
@@ -113,7 +113,7 @@
         },
         // this must be called when the element is moved event callback
         checkOutOfBounds: function(oldPosition) {
-            if(!this.within(0, 0, Crafty.viewport.width, Crafty.viewport.height)) {
+            if(!this.within(90, 65, 800, 490)) {
                 this.attr({x: oldPosition.x, y: oldPosition.y});
             }
         }
@@ -252,11 +252,11 @@
         var scoreboard2 = Crafty.e('Score').attr({w: 100, h: 20, x: 900, y: 0});
 
         //create a player...
-        var p1 = Crafty.e('Player').multiway(5, {W: -90, S: 90, D: 0, A: 180}).attr({x: 80, y: 300})
+        var p1 = Crafty.e('Player').multiway(5, {W: -90, S: 90, D: 0, A: 180}).attr({x: 110, y: 300})
                         .spriteName('player1').collision();
        
         
-        var p2 = Crafty.e('Player').multiway(5, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}) .attr({x: 715, y: 300})
+        var p2 = Crafty.e('Player').multiway(5, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}) .attr({x: 700, y: 300})
                         .spriteName('player2').collision();
        // p2.scoreboard = scoreboard2;
        Crafty.audio.add("cracksound", "sfx/ice_crack_1.mp3");
