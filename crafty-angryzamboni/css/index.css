@@ -1,0 +1,9 @@
+#container {
+    margin: auto;
+    width: 1024px;
+    text-align: center;
+}
+
+#cr-stage {
+    border: 1px solid black;
+}
