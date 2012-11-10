@@ -68,25 +68,7 @@
         }
     });
 
-    // a bullet, it shoots things
-    Crafty.c('Bullet', {
-        init: function() {
-            this.requires('Renderable, Collision, Delay, SpriteAnimation')
-                .spriteName('bullet')
-                .collision()
-                // set up animation from column 0, row 1 to column 1
-                .animate('fly', 0, 1, 1)
-                // start the animation
-                .animate('fly', 5, -1)                
-                // move left every frame, destroy bullet if its off the screen
-                .bind("EnterFrame", function() {
-                    this.x += 10;
-                    if (this.x > 1024) {
-                        this.destroy();
-                    }
-                })
-        }
-    });
+
 
     
     // targets to shoot at
@@ -108,10 +90,10 @@
                 y: Crafty.math.randomNumber(0,600-this.h)});
         },
         // we got hit!
-        _hitByPlayer: function() {
+        _hitByPlayer: function(object) {
             // find the global 'Score' component
-            var score = Crafty('Score');
-            score.increment();
+            var globalScore = Crafty('Score');
+            globalScore.increment();
 
             // show an explosion!
             Crafty.e("Explosion").attr({x:this.x, y:this.y});
@@ -140,7 +122,7 @@
     // Player component    fafafadf
     Crafty.c('Player', {        
         init: function() {           
-            this.requires('Renderable, Fourway, Collision, ViewportBounded, SpriteAnimation')
+            this.requires('Renderable, Multiway, Collision, ViewportBounded, SpriteAnimation')
                 .spriteName('player')
                 .collision()
                 .attr({x: 64, y: 64})
@@ -148,7 +130,7 @@
                 .animate('fly', 0, 0, 1)
                 .animate('fly', 5, -1)
                 // set up fourway controller
-                .fourway(5)
+                
                 // also react to the SPACE key being pressed
                 .requires('Keyboard')
                 .bind('KeyDown', function(e) {
@@ -173,13 +155,11 @@
             this._textGen = function() {
                 return "Score: " + this.score;
             };
-            this.attr({w: 100, h: 20, x: 900, y: 0})
-                .text(this._textGen);
+            this.text(this._textGen);
         },
         // increment the score - note how we call this.text() to change the text!
         increment: function() {
             this.score = this.score + 1;
-            this.text(this._textGen);
         }
     })
 
@@ -248,10 +228,15 @@
     //
     Game.prototype.mainScene = function() {
         // create a scoreboard
-        Crafty.e('Score');
+        var scoreboard1 = Crafty.e('Score').attr({w: 100, h: 20, x: 100, y: 0});
+        var scoreboard2 = Crafty.e('Score').attr({w: 100, h: 20, x: 900, y: 0});
 
         //create a player...
-        Crafty.e('Player');
+        var p1 = Crafty.e('Player').multiway(5, {W: -90, S: 90, D: 0, A: 180}).attr({x: 80, y: 300});
+       
+        
+        var p2 = Crafty.e('Player').multiway(5, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}) .attr({x: 715, y: 300});
+       // p2.scoreboard = scoreboard2;
         
         // create some junk to avoid
         for (i = 0; i < 5; i++) {
