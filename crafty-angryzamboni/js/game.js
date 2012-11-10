@@ -76,7 +76,7 @@
         init: function() {
             this.requires('Renderable, Collision, Delay')
                 // choose a random enemy sprite to use
-                .spriteName('enemy' + Crafty.math.randomInt(1,2))
+                .spriteName('crack' + Crafty.math.randomInt(1,4))
                 .collision()
                 // detect when we get hit by bullets
                 .onHit('Player', this._hitByPlayer);
@@ -123,12 +123,10 @@
     Crafty.c('Player', {        
         init: function() {           
             this.requires('Renderable, Multiway, Collision, ViewportBounded, SpriteAnimation')
-                .spriteName('player')
                 .collision()
-                .attr({x: 64, y: 64})
+                
                 // animate the ship - set up animation, then trigger it
-                .animate('fly', 0, 0, 1)
-                .animate('fly', 5, -1)
+                
                 // set up fourway controller
                 
                 // also react to the SPACE key being pressed
@@ -192,14 +190,27 @@
         
         function onLoaded() {
             // set up sprites
-            Crafty.sprite(64, 'img/shooter-sprites.png', {
-                player: [0, 0],
-                bullet: [0, 1],
-                enemy1: [0, 2],
-                enemy2: [1, 2],
-                explosion1: [0, 3],
-                explosion2: [1, 3]
+            Crafty.sprite(64, 'img/zamboni-sprite.png', {
+                player1: [0, 0],
                 });
+            Crafty.sprite(64, 'img/zamboni-sprite2.png', {
+                player2: [0, 0],
+                });
+            Crafty.sprite(32, 'img/crack1.png', {
+                crack1: [0, 0],
+                });
+                
+            Crafty.sprite(32, 'img/crack1.png', {
+                crack2: [0, 0],
+                });  
+                
+           Crafty.sprite(32, 'img/crack1.png', {
+                crack3: [0, 0],
+                });
+                
+           Crafty.sprite(32, 'img/crack1.png', {
+                crack4: [0, 0],
+                });  
             
             // jump to the main scene in half a second
             loading.delay(function() {
@@ -217,7 +228,12 @@
         
         Crafty.load([
             // list of images to load
-            'img/shooter-sprites.png'
+            'img/zamboni-sprite.png',
+            'img/zamboni-sprite2.png',
+            'img/crack1.png',
+            'img/crack2.png',
+            'img/crack3.png',
+            'img/crack4.png'
         ], 
         onLoaded, onProgress, onError);
         
@@ -227,20 +243,26 @@
     // The main game scene
     //
     Game.prototype.mainScene = function() {
+        
+        Crafty.background("url('img/arena.png')");
+        
+        
         // create a scoreboard
         var scoreboard1 = Crafty.e('Score').attr({w: 100, h: 20, x: 100, y: 0});
         var scoreboard2 = Crafty.e('Score').attr({w: 100, h: 20, x: 900, y: 0});
 
         //create a player...
-        var p1 = Crafty.e('Player').multiway(5, {W: -90, S: 90, D: 0, A: 180}).attr({x: 80, y: 300});
+        var p1 = Crafty.e('Player').multiway(5, {W: -90, S: 90, D: 0, A: 180}).attr({x: 80, y: 300})
+                        .spriteName('player1').collision();
        
         
-        var p2 = Crafty.e('Player').multiway(5, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}) .attr({x: 715, y: 300});
+        var p2 = Crafty.e('Player').multiway(5, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180}) .attr({x: 715, y: 300})
+                        .spriteName('player2').collision();
        // p2.scoreboard = scoreboard2;
         
         // create some junk to avoid
         for (i = 0; i < 5; i++) {
-            Crafty.e('Ice');
+            Crafty.e('Ice').collision();
         }
     };
     
